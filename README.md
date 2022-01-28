@@ -42,7 +42,7 @@
 	- [Reset Password](#reset-password)
 	- [Telnet / Console](#telnet--console)
 	- [SSH](#ssh)
-	- [Clock](#clock)
+	- [Clock](#clock/ntp)
 	- [Disable unused services](#disable-unused-services)
 	- [Radius](#radius)
 	- [TACACS+](#tacacs)
@@ -560,7 +560,7 @@ Note: flash: is the main flash memory on all iOS devices
 | # show ip ssh                                  | SSH version, timeout time, auth retries..                |
 | # show ssh                                     | List of active connections                               |
 
-### Clock / NTP
+### Clock/NTP
 
 | Command                                  | Description                    |
 |:-----------------------------------------|:-------------------------------|
