@@ -560,18 +560,26 @@ Note: flash: is the main flash memory on all iOS devices
 | # show ip ssh                                  | SSH version, timeout time, auth retries..                |
 | # show ssh                                     | List of active connections                               |
 
-### Clock
+### Clock / NTP
 
 | Command                                  | Description                    |
 |:-----------------------------------------|:-------------------------------|
 | # show clock                             | Show time and date             |
-| (config)# clock set 23:50:42 10 Jan 2017 | Update clock                   |
-| (config)# clock timezone EST 0           | Update timezone to EST         |
-| (config)# ntp server 10.20.30.40         | Configure upstream ntp server. |
-| (config)# ntp master [stratum]           | Enable ntp server.             |
 | # show ntp associations                  | ntp connections.               |
 | # show ntp status                        | synchronized?, statum, ...     |
-
+| (config)# clock set 23:50:42 10 Jan 2017 | Update clock                   |
+| (config)# clock timezone EST 0           | Update timezone to EST         |
+| (config)# ntp server *ip-address*        | Configure upstream ntp server  |
+| (config)# ntp master *[stratum]*         | Enable ntp server.             |
+| (config)# ntp peer *ip-address*          |                                |	
+| (config)# ntp update-calendar            |                                |
+| (config)# ntp source *interface*         |                                |
+| (config)# ntp authenticate               |                                |
+| (config)# ntp authentication-key *key-number* md5 *key* |                 |
+| (config)# ntp trusted-key *key-number*   |                                |
+| (config)# ntp server *ip-address* key *key-number*|                       |
+| (config)# ntp peer *ip-address* key *key-number*|                         |
+	
 ### Disable unused services
 
 | Command                              | Description                           |
