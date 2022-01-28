@@ -42,7 +42,7 @@
 	- [Reset Password](#reset-password)
 	- [Telnet / Console](#telnet--console)
 	- [SSH](#ssh)
-	- [Clock](#clock--ntp)
+	- [Clock / NTP](#clock--ntp)
 	- [Disable unused services](#disable-unused-services)
 	- [Radius](#radius)
 	- [TACACS+](#tacacs)
