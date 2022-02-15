@@ -426,19 +426,7 @@ Note: NAT Table entries are kept for 24h after the last use by default.
 | (config)# int g1/1                                       | Enter interface config mode on client facing interface |
 | (config-if)# ip helper-address 192.168.1.1               | Relay DHCP Requests to this host                       |
 
-## DHCP Snooping
-
-| Command                                                  | Description                                            |
-|:---------------------------------------------------------|:-------------------------------------------------------|
-| (config)# ip dhcp snooping  			           | Enable dhcp snooping globally			    |
-| (config)# ip dhcp snooping vlan vlan-number              | Enable dhcp snooping for the vlan                      |
-| (config)# errdisable recovery cause dhcp-rate-limit      | Reenable port automatically                            |
-| (config)# no ip dhcp snooping information option         | Disable option 82 "DHCP relay agent information option" |
-| (config-if)# ip dhcp snooping trust                      | Trust interface                                        |
-| (config-if)# ip dhcp snooping limit rate packets-per-second | Limit rate at which dhcp packets are allowed to enter the interface |
-| # show ip dhcp snooping binding                          | Info                                                  |
-
-
+	
 ### Troubleshooting DHCP
 
 | Command                       | Description                                           |
@@ -450,7 +438,20 @@ Note: NAT Table entries are kept for 24h after the last use by default.
 | # sh run &#124; section dhcp  | See if ip dhcp exclude-address / pool stuff is wrong. |
 | # sh run int g1/1             | See if ip helper-address is wrong.                    |
 
+	
+## DHCP Snooping
 
+| Command                                                  | Description                                            |
+|:---------------------------------------------------------|:-------------------------------------------------------|
+| (config)# ip dhcp snooping  			           | Enable dhcp snooping globally			    |
+| (config)# ip dhcp snooping vlan vlan-number              | Enable dhcp snooping for the vlan                      |
+| (config)# errdisable recovery cause dhcp-rate-limit      | Enable automatic recovery from err-disabled state due to DHCP rate limit |
+| (config)# no ip dhcp snooping information option         | This disables adding option 82 (Relay Agent Information) to DHCP messages passing through the switch. Option 82 should only be added when the switch acts as a relay agent, so we disable it with this command. |
+| (config-if)# ip dhcp snooping trust/untrust              | Trust/untrust interface                                |
+| (config-if)# ip dhcp snooping limit rate packets-per-second | Limit the number of incoming DHCP messages to n per second, put the interface in err-disabled state if this limit is exceeded. |
+| # show ip dhcp snooping binding                          | Show binding table                                     |	
+
+	
 ## HSRP
 
 | Command                                             | Description                                                      |
