@@ -142,8 +142,11 @@
 | (config-if)# switchport port-security maximum 1                  | Number of allowed MACs.                             |
 | (config-if)# switchport port-security mac-address 1234.5678.9abc | Manually allow a MAC on this port.                  |
 | (config-if)# switchport port-security mac-address sticky         | Allow learning of connected macs until mac reached. |
-| (config-if)# switchport port-security violation shutdown         | Shutdown port when other device gets connected.     |
+| (config-if)# switchport port-security violation { shutdown/restrict/protect }         | Shutdown port when other device gets connected.     |
 | (config-if)# shutdown  (config-if)# no shutdown                  | Reenable if after port-security violation.          |
+| (config-if)# switchport port-security aging time minutes         | Default MAC aging time: 0 mins                      |
+| (config-if)# switchport port-security aging type {absolute/inactivity} | Default MAC aging type: Absolute (mac is removed after timer expires), inactivity = the timer is reset every time a frame from that MAC is received                   |
+| (config-if)# switchport port-security aging static               | Enables static configured MACs aging                |
 | (config)# errdisable recovery cause psecure-violation            | Reenable if automatically after problem is fixed.   |
 | (config)# errdisable recovery interval 42                        | Recheck every 42 seconds. (min 30, default 300)     |
 
@@ -162,6 +165,7 @@ Port-security violation terms
 | # show port-security [interface g1/1] | port status, violation mode, max/total MACs,...        |
 | # show port-security address          | Secure MACs on ports.                                  |
 | # show errdisable recovery            | Check if autorecovery is enabled. Disabled by default. |
+| # show mac address-table secure       | 							 |
 
 
 ## Configure vlans
