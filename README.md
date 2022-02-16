@@ -7,8 +7,11 @@
 - [Configure basic Networking](#configure-basic-networking)
 	- [Troubleshoot basic Networking](#troubleshoot-basic-networking)
 	- [Troubleshoot networks with SPAN](#troubleshoot-networks-with-span)
-- [Port Security](#port-security)
-	- [Troubleshooting Port Security](#troubleshooting-port-security)
+- [Security Services](#security-services)
+	- [Port Security](#port-security)
+		- [Troubleshooting Port Security](#troubleshooting-port-security)
+	- [DHCP Snooping](#dhcp-snooping)
+	- [Dynamic ARP Inspection](#dynamic-arp-inspection)
 - [Configure vlans](#configure-vlans)
 	- [Layer2 Switch Vlan Config](#layer2-switch-vlan-config)
 	- [Layer3 Switch Vlan Config](#layer3-switch-vlan-config)
@@ -32,7 +35,6 @@
 	- [Troubleshooting NAT](#troubleshooting-nat)
 - [DHCP Server](#dhcp-server)
 	- [Troubleshooting DHCP](#troubleshooting-dhcp)
-- [DHCP Snooping](#dhcp-snooping)
 - [HSRP](#hsrp)
 	- [Troubleshooting HSRP](#troubleshooting-hsrp)
 - [SLAs](#slas)
@@ -134,6 +136,10 @@
 | (config)# monitor session 23 destination interface g1/2         | Define SPAN #23 output as g1/2 |
 | # show monitor                                                  | Show all configured SPANs      |
 
+
+## Security Services
+
+
 ## Port Security
 
 | Command                                                          | Description                                         |
@@ -168,6 +174,34 @@ Port-security violation terms
 | # show errdisable recovery            | Check if autorecovery is enabled. Disabled by default. |
 | # show mac address-table secure       | 							 |
 
+
+## DHCP Snooping
+
+| Command                                                  | Description                                            |
+|:---------------------------------------------------------|:-------------------------------------------------------|
+| (config)# ip dhcp snooping  			           | Enable dhcp snooping globally			    |
+| (config)# ip dhcp snooping vlan vlan-number              | Enable dhcp snooping for the vlan                      |
+| (config)# errdisable recovery cause dhcp-rate-limit      | Enable automatic recovery from err-disabled state due to DHCP rate limit |
+| (config)# no ip dhcp snooping information option         | This disables adding option 82 (Relay Agent Information) to DHCP messages passing through the switch. Option 82 should only be added when the switch acts as a relay agent, so we disable it with this command. |
+| (config-if)# ip dhcp snooping trust/untrust              | Trust/untrust interface                                |
+| (config-if)# ip dhcp snooping limit rate packets-per-second | Limit the number of incoming DHCP messages to n per second, put the interface in err-disabled state if this limit is exceeded. |
+| # show ip dhcp snooping binding                          | Show binding table                                     |	
+
+
+## Dynamic ARP Inspection
+
+| Command                               | Description                                            |
+|:--------------------------------------|:-------------------------------------------------------|
+| # (config)# ip arp inspection vlan *n*| Enable DAI on VLAN *n*      				 |
+| # (config-if) ip arp inspection trust | Trust this port                           	         |
+| # (config) ip arp inspection validate [dst-mac] [src-mac] [ip] | Enable one or more extra validation steps 												|
+| # (config-if) ip arp inspection limit rate n [burst interval sec]| Limit the number of ARP messages to n packets per sec (by default, rate is set to 15, burst interval is set to 1 second)             |
+| # (config-if) ip arp inspection limit rate none | Disable rate limits                          |
+| # (config) errdisable recovery cause arp-inspection | Enable automatic recovery                |
+| # (config) errdisable recovery interval n | automatically recover after n seconds (note: this covers all cases of err-disable, including port security related ones.)                                 |
+| # show ip arp inspection              | 							 |
+| # show ip arp inspection statistics   | 							 |
+| # show ip arp inspection interfaces	|
 
 ## Configure vlans
 
@@ -437,19 +471,6 @@ Note: NAT Table entries are kept for 24h after the last use by default.
 | # show ip dhcp binding        | Show which mac got which ip                           |
 | # sh run &#124; section dhcp  | See if ip dhcp exclude-address / pool stuff is wrong. |
 | # sh run int g1/1             | See if ip helper-address is wrong.                    |
-
-	
-## DHCP Snooping
-
-| Command                                                  | Description                                            |
-|:---------------------------------------------------------|:-------------------------------------------------------|
-| (config)# ip dhcp snooping  			           | Enable dhcp snooping globally			    |
-| (config)# ip dhcp snooping vlan vlan-number              | Enable dhcp snooping for the vlan                      |
-| (config)# errdisable recovery cause dhcp-rate-limit      | Enable automatic recovery from err-disabled state due to DHCP rate limit |
-| (config)# no ip dhcp snooping information option         | This disables adding option 82 (Relay Agent Information) to DHCP messages passing through the switch. Option 82 should only be added when the switch acts as a relay agent, so we disable it with this command. |
-| (config-if)# ip dhcp snooping trust/untrust              | Trust/untrust interface                                |
-| (config-if)# ip dhcp snooping limit rate packets-per-second | Limit the number of incoming DHCP messages to n per second, put the interface in err-disabled state if this limit is exceeded. |
-| # show ip dhcp snooping binding                          | Show binding table                                     |	
 
 	
 ## HSRP
